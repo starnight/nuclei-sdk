@@ -27,7 +27,7 @@ override DOWNLOAD := flashxip
 NUCLEI_SDK_SOC_BOARD := $(NUCLEI_SDK_SOC)/Board/$(BOARD)
 NUCLEI_SDK_SOC_COMMON := $(NUCLEI_SDK_SOC)/Common
 
-OPENOCD_CFG ?= $(NUCLEI_SDK_SOC_BOARD)/openocd_gd32vf103.cfg
+OPENOCD_CFG ?= interface/ftdi/um232h.cfg -f target/gd32vf103.cfg
 
 # Misc fixup for board variant
 ifeq ($(BOARD), gd32vf103c_longan_nano)
@@ -41,10 +41,6 @@ else # other boards except gd32vf103c_longan_nano
 LINKER_SCRIPT ?= $(NUCLEI_SDK_SOC_BOARD)/Source/GCC/gcc_gd32vf103_$(DOWNLOAD).ld
 endif
 
-# File existence check for OPENOCD_CFG and LINKER_SCRIPT
-ifeq ($(wildcard $(OPENOCD_CFG)),)
-$(error The openocd configuration file $(OPENOCD_CFG) for $(SOC) doesn't exist, please check!)
-endif
 # Allow non-existance of LINKER_SCRIPT, it might be generated
 ifeq ($(wildcard $(LINKER_SCRIPT)),)
 $(warning The link script file $(LINKER_SCRIPT) for $(SOC) doesn't exist, please check!)
